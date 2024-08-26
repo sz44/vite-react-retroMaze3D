@@ -23,3 +23,5 @@ const shadesFloor = [
 ];
 
 const shadeOrb = "#ffff00";
+
+export {shadesWall, shadesFloor, shadeOrb}
