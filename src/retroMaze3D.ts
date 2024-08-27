@@ -12,7 +12,6 @@ export class RetroMaze3D {
     private playerX: number;
     private playerY: number;
     private playerA: number;
-    private run: boolean;
     private lastRun: number;
     private timer: Timer;
     private FPS: number;
@@ -25,8 +24,10 @@ export class RetroMaze3D {
     private speed: number;
     private keys: Set<string>;
     private orbReached: boolean;
+    private onGameOver: ()=>void;
+    private onTimeUpdate: (n:number)=>void;
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, onGameOver: ()=>void, onTimeUpdate: (n:number)=>void) {
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         if (!this.ctx) {
@@ -42,12 +43,11 @@ export class RetroMaze3D {
         this.screenHeight = canvas.height / this.screenCellSize;
         this.screenWidth = canvas.width / this.screenCellSize;
         this.screen = Array(this.screenHeight * this.screenWidth).fill(0);
-        this.playerX = 4;
-        this.playerY = 1;
+        this.playerX = 7;
+        this.playerY = 8;
         this.playerA = 0;
         this.FOV = Math.PI / 4;
         this.speed = 0.1;
-        this.run = false;
         this.lastRun = 0;
         this.map = map1;
         this.mapHeight = 16;
@@ -56,11 +56,23 @@ export class RetroMaze3D {
         this.depth = 16;
         this.keys = new Set();
         this.orbReached = false;
+        this.onGameOver = onGameOver;
+        this.onTimeUpdate = onTimeUpdate;
+        this.init();
+    }
+
+    private init = () => {
+        window.addEventListener("keydown", (e) => {
+           this.keys.add(e.key);
+        });
+
+        window.addEventListener("keyup", (e) => {
+            this.keys.delete(e.key);
+        });
     }
 
     private update = () => {
         if (this.keys.has("a")) {
-            console.log("a");
             this.playerA -= 0.04;
         }
         if (this.keys.has("d")) {
@@ -308,8 +320,12 @@ export class RetroMaze3D {
     };
 
     private animate = (time: number) => {
+        this.onTimeUpdate(this.timer.time);
+
         if (this.orbReached) {
+            // this.onScoreUpdate(this.timer.time);
             this.timer.stop();
+            this.onGameOver();
             return;
         }
 
@@ -325,19 +341,11 @@ export class RetroMaze3D {
     };
 
     public start = () => {
-        window.addEventListener("keydown", (e) => {
-           this.keys.add(e.key);
-        });
-
-        window.addEventListener("keyup", (e) => {
-            this.keys.delete(e.key);
-        });
-
-        this.playerX = 7;
-        this.playerY = 14;
-        this.playerA = 0;
-        this.run = true;
+        this.playerX = 14;
+        this.playerY = 2;
+        this.playerA = Math.PI/2;
         this.lastRun = 0;
+        this.orbReached = false;
         this.timer.start();
         requestAnimationFrame(this.animate);
     };
