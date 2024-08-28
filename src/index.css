@@ -7,8 +7,51 @@
 body {
   background: black;
   color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+button {
+    padding: 1rem;
+    background: rgb(255, 255, 255);
+    border: 3px solid rgb(9, 51, 9);
+    border-radius: 25px;
+    font-size: larger;
+    font-weight: 800;
+}
+input[type="text"] {
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 25px;
+    margin: 5px;
+}
+
+li {
+  list-style: none;
+}
+
+.time {
+    font-size: large;
+}
+
+.menu {
+    padding: 1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+h1 {
+    margin: 1rem;
 }
 
 canvas {
-  display: block;
+    display: block;
+    z-index: 1;
+    background: rgb(33, 35, 153);
+    border: 1px solid black;
+    box-shadow: 5px 5px 5px black;
+    margin: auto;
 }

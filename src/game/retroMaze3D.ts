@@ -1,5 +1,5 @@
-import { shadesWall, shadesFloor, shadeOrb } from "./game/shades";
-import { map1 } from "./game/maps";
+import { shadesWall, shadesFloor, shadeOrb } from "./shades";
+import { map1 } from "./maps";
 import { Timer } from "./timer";
 
 export class RetroMaze3D {

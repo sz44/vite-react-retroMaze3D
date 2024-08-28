@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { RetroMaze3D } from "./retroMaze3D";
+import { RetroMaze3D } from "./game/retroMaze3D";
 
 type GameProps = {
 	onScoreUpdate: (playerName:string, playerScore: number) => void;
@@ -47,22 +47,22 @@ function Game({ onScoreUpdate }: GameProps) {
 	}, []);
 
 	return (
-		<>
-			<div>
+		<div>
+			<div className="time">
 				time: <span id="time">{time}</span>
 			</div>
-			{!isStarted && <button onClick={handleStartGame}>START</button>}
+			{!isStarted && <button className="menu" onClick={handleStartGame}>START</button>}
 			<canvas ref={canvasRef} />
 			{isGameOver && (
-				<div>
+				<div className="menu">
 					<form onSubmit={handleNameSubmit}>
-						<input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+						<input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="enter name" />
 						<button>SUBMIT</button>
 					</form>
 					<button onClick={handleStartGame}>RESTART</button>
 				</div>
 			)}
-		</>
+		</div>
 	);
 }
 
@@ -73,8 +73,6 @@ function App() {
 
 	const handleScoreUpdate = (playerName: string, playerScore: number) => {
 		setLocalScores(p => [...p,[playerName, playerScore] ])
-		// setScore(newScore);
-		// setIsGameOver(true);
 	};
 
 	return (
@@ -85,10 +83,10 @@ function App() {
 				<p>Controls: w,a,s,d,q,e</p>
 			</div>
 			<Game onScoreUpdate={handleScoreUpdate} />
-			<h2>Scores:</h2>
+			<h2>High Scores:</h2>
 			<ul>
-				{localScores.map((n, i) => {
-					return <li key={i}>{n}</li>;
+				{localScores.sort((a,b)=>a[1]-b[1]).map((n, i) => {
+					return <li key={i}>{`${n[0]} ..... ${n[1]}`}</li>;
 				})}
 			</ul>
 		</>
